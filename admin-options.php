@@ -13,9 +13,7 @@ function wc_stock_availability_settings_page(){ ?>
 	        <td><input type="text" name="wc_sa_name" value="<?php echo esc_attr( get_option('wc_sa_name') ); ?>" /></td>
 	        </tr>
 	    </table>
-	    
 	    <?php submit_button(); ?>
-
 	</form>
 	</div>
 <?php }

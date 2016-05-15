@@ -1,6 +1,7 @@
 <?php 
 
-function insert_data_into_ordered_tabale( $order_id, $product_id, $product_qty ){
+function woo_pm_insert_data_into_ordered_tabale( $order_id, $product_id, $product_qty ){
+
 	global $wpdb;
 
     $author_id = $wpdb->get_var("SELECT post_author FROM $wpdb->posts WHERE $wpdb->posts.ID = 
@@ -14,16 +15,30 @@ function insert_data_into_ordered_tabale( $order_id, $product_id, $product_qty )
 		'author_email' => $author_email
 		)
 	);
+
 }
 
 function is_preorder_exceded( $product_id ){
-	// $total_units = get_post_meta( $product_id, '_stock', true );
-	$units_sold  = get_post_meta( $product_id, 'total_sales', true );
-	$preorder_unit = 5;
 
-	return $units_sold > $preorder_unit;
+	$units_sold    = get_post_meta( $product_id, 'total_sales', true );
+	$preorder_unit = get_post_meta( $product->id, '_preorder_limit', true );
+
+	return $units_sold >= $preorder_unit;
 }
 
-function send_email_to_previous_customer( $order_id ){
+
+function woo_pm_send_email_to_ordered_customer( $product_id, $product_name ){
+
+	global $wpdb;
+
+	$table_name = $wpdb->prefix . 'wc_ordered_products';
+	$customer_emails = $wpdb->get_results("SELECT author_email FROM $table_name WHERE product_id = $product_id" );
+
+	foreach ($customer_emails as $email) {
+		$to      = $email->author_email;
+		$subject = 'Your product ' . $product_name . ' just ready for shipment';
+		$message = 'Your orderd product just reached to the preorder limit, so i\'ll trigger soon';
+		wp_mail( $to, $subject, $message );
+	}
 
 }
