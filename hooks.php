@@ -4,7 +4,7 @@ require_once(__PLUGIN_ROOT__.'/helper-functions.php');
 
 function woo_pm_admin_menu() {
 
-	add_menu_page('WC Stock Availability', 'WC Stock', 'administrator', 'woo_pm_admin_settings', 'wc_stock_availability_settings_page', 'dashicons-admin-generic');
+	add_menu_page('Woo pre-order mailer', 'WOO PMailer', 'administrator', 'woo_pm_admin_settings', 'woo_pm_admin_settings_page', 'dashicons-admin-generic');
 
 }
 add_action('admin_menu', 'woo_pm_admin_menu');
@@ -12,9 +12,9 @@ add_action('admin_menu', 'woo_pm_admin_menu');
 
 function woo_pm_admin_settings() {
 
-	register_setting( 'wc_stock_availability_settings_group', 'wc_sa_name' );
-	register_setting( 'wc_stock_availability_settings_group', 'wc_sa_phone' );
-	register_setting( 'wc_stock_availability_settings_group', 'wc_sa_email' );
+	register_setting( 'woo_pm_settings_group', 'wc_sa_name' );
+	register_setting( 'woo_pm_settings_group', 'wc_sa_phone' );
+	register_setting( 'woo_pm_settings_group', 'wc_sa_email' );
 
 }
 add_action( 'admin_init', 'woo_pm_admin_settings' );
