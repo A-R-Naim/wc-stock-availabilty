@@ -9,7 +9,7 @@
  * License: GPL2
  */
 
-define('__PLUGIN_ROOT__', dirname(dirname(__FILE__)) . '/wc-stock-availabilty'); 
+define('__PLUGIN_ROOT__', dirname(dirname(__FILE__)) . '/woo-preorder-mailer'); 
 require_once(__PLUGIN_ROOT__.'/hooks.php'); 
 require_once(__PLUGIN_ROOT__.'/admin-options.php');
 

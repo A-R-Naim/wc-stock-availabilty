@@ -46,7 +46,7 @@ function woo_pm_visual_status_placement(){
 }
 
 add_action( 'woocommerce_after_shop_loop_item', 'woo_pm_visual_status_placement', 6);	
-//add_action( 'woocommerce_before_add_to_cart_form', 'woo_pm_visual_status_placement', 10, 0);
+add_action( 'woocommerce_before_add_to_cart_form', 'woo_pm_visual_status_placement', 25, 0);
 
 
 function action_woocommerce_payment_complete( $order_id ) { 
