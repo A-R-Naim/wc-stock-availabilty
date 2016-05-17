@@ -108,8 +108,13 @@ add_action( 'woocommerce_product_options_general_product_data', 'woo_pm_add_preo
 function woo_pm_add_preorder_fields_save( $post_id ){
 	
 	$woocommerce_preorder_field = $_POST['_preorder_limit'];
-	if( !empty( $woocommerce_preorder_field ) )
-		update_post_meta( $post_id, '_preorder_limit', esc_attr( $woocommerce_preorder_field ) );
+
+	if( !empty( $woocommerce_preorder_field ) ){
+
+		if ( is_numeric( $woocommerce_preorder_field ) )
+		update_post_meta( $post_id, '_preorder_limit', $woocommerce_preorder_field );
+	
+	}
 
 }
 add_action( 'woocommerce_process_product_meta', 'woo_pm_add_preorder_fields_save' );
