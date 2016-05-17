@@ -1,6 +1,6 @@
 <?php 
 /**
- * Plugin Name: WooCommerce Stock Availability (BETA)
+ * Plugin Name: WooCommerce Pre-order mailer
  * Plugin URI: http://arnaim.me/plugins/woo-preorder-mailer
  * Description: This plugin will display WooCommerce pre-order limit status.
  * Version: 1.0.0
@@ -11,7 +11,6 @@
 
 define('__PLUGIN_ROOT__', dirname(dirname(__FILE__)) . '/woo-preorder-mailer'); 
 require_once(__PLUGIN_ROOT__.'/hooks.php'); 
-require_once(__PLUGIN_ROOT__.'/admin-options.php');
 
 
 function woo_pm_create_ordered_products_table() {

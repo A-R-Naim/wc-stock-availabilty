@@ -36,8 +36,8 @@ function woo_pm_send_email_to_ordered_customer( $product_id, $product_name ){
 
 	foreach ($customer_emails as $email) {
 		$to      = $email->author_email;
-		$subject = 'Your product ' . $product_name . ' just ready for shipment';
-		$message = 'Your orderd product just reached to the preorder limit, so i\'ll trigger soon';
+		$subject = get_option('woo_pm_mail_subject');
+		$message = get_option('woo_pm_mail_content');
 		wp_mail( $to, $subject, $message );
 	}
 

@@ -1,6 +1,7 @@
 <?php  
 
 require_once(__PLUGIN_ROOT__.'/helper-functions.php');
+require_once(__PLUGIN_ROOT__.'/admin-options.php');
 
 function woo_pm_admin_menu() {
 
@@ -12,9 +13,12 @@ add_action('admin_menu', 'woo_pm_admin_menu');
 
 function woo_pm_admin_settings() {
 
-	register_setting( 'woo_pm_settings_group', 'wc_sa_name' );
-	register_setting( 'woo_pm_settings_group', 'wc_sa_phone' );
-	register_setting( 'woo_pm_settings_group', 'wc_sa_email' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_status_bar' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_status_bg' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_status_text' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_disable_on_single' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_mail_subject' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_mail_content' );
 
 }
 add_action( 'admin_init', 'woo_pm_admin_settings' );
@@ -22,7 +26,12 @@ add_action( 'admin_init', 'woo_pm_admin_settings' );
 
 
 function woo_pm_visual_status_style(){
-	echo '<style>.woo-preorder-box{background-color: rgb(235, 233, 235);height: 22px;}.preorder-status-bar{    color: #ffffff;line-height: 22px;height: 22px;background-color: #77A464;text-align:center;    border-radius: 0px 10px 10px 0px;max-width:100%;} </style>';
+
+	$status_bar_color  = get_option('woo_pm_status_bar');
+	$status_bg_color   = get_option('woo_pm_status_bg');
+	$status_text_color = get_option('woo_pm_status_text');
+
+	echo "<style>.woo-preorder-box{background-color: $status_bg_color;height: 22px;}.preorder-status-bar{    color: $status_text_color;line-height: 22px;height: 22px;background-color: $status_bar_color;text-align:center;    border-radius: 0px 10px 10px 0px;max-width:100%;} </style>";
 }
 add_action( 'wp_head', 'woo_pm_visual_status_style', 11, 0 );
 
@@ -45,8 +54,13 @@ function woo_pm_visual_status_placement(){
 
 }
 
-add_action( 'woocommerce_after_shop_loop_item', 'woo_pm_visual_status_placement', 6);	
-add_action( 'woocommerce_before_add_to_cart_form', 'woo_pm_visual_status_placement', 25, 0);
+add_action( 'woocommerce_after_shop_loop_item', 'woo_pm_visual_status_placement', 6);
+
+$disable_status_on_single = get_option( 'woo_pm_disable_on_single' );
+
+if ( $disable_status_on_single == 'no') {
+	add_action( 'woocommerce_before_add_to_cart_form', 'woo_pm_visual_status_placement', 12, 0);
+}	
 
 
 function action_woocommerce_payment_complete( $order_id ) { 
@@ -108,12 +122,10 @@ add_action( 'woocommerce_product_options_general_product_data', 'woo_pm_add_preo
 function woo_pm_add_preorder_fields_save( $post_id ){
 	
 	$woocommerce_preorder_field = $_POST['_preorder_limit'];
-
-	if( !empty( $woocommerce_preorder_field ) ){
-
-		if ( is_numeric( $woocommerce_preorder_field ) )
-		update_post_meta( $post_id, '_preorder_limit', $woocommerce_preorder_field );
 	
+	if( !empty( $woocommerce_preorder_field ) ){
+		if ( is_numeric( $woocommerce_preorder_field) )
+		update_post_meta( $post_id, '_preorder_limit', $woocommerce_preorder_field );
 	}
 
 }
