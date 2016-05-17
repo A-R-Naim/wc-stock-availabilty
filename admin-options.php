@@ -7,7 +7,7 @@ function woo_pm_admin_settings_page(){ ?>
 	<form method="post" action="options.php">
 	    <?php settings_fields( 'woo_pm_settings_group' ); ?>
 	    <?php do_settings_sections( 'woo_pm_settings_group' ); ?>
-	    <h3><?php esc_html_e( 'Pre-order status styling') ?></h3>
+	    <h3><?php esc_html_e( 'Pre-order status settings') ?></h3>
 	    <table class="form-table">
 	        <tr valign="top">
 		        <th scope="row"><?php esc_html_e( 'Status bar color', 'text-domain' ); ?></th>
@@ -35,6 +35,18 @@ function woo_pm_admin_settings_page(){ ?>
 					  <option value="yes" <?php echo ( $selected == 'yes' ) ? 'selected' : '' ; ?>>Yes</option>
 					  <option value="no" <?php echo ( $selected == 'no' ) ? 'selected' : '' ; ?>>No</option>
 					</select>
+		        </td>
+	        </tr>
+	        <tr valign="top">
+		        <th scope="row"><?php esc_html_e( 'Mail subject', 'text-domain' ); ?></th>
+		        <td>
+		        	<input type="text" name="woo_pm_mail_subject" value="<?php echo esc_attr( get_option('woo_pm_mail_subject') ); ?>" />
+		        </td>
+	        </tr>
+	        <tr valign="top">
+		        <th scope="row"><?php esc_html_e( 'Mail content', 'text-domain' ); ?></th>
+		        <td>
+		        	<textarea name="woo_pm_mail_content"><?php echo esc_attr( get_option('woo_pm_mail_content') ); ?></textarea>
 		        </td>
 	        </tr>
 	    </table>

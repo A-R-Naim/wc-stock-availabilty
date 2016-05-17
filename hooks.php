@@ -17,6 +17,8 @@ function woo_pm_admin_settings() {
 	register_setting( 'woo_pm_settings_group', 'woo_pm_status_bg' );
 	register_setting( 'woo_pm_settings_group', 'woo_pm_status_text' );
 	register_setting( 'woo_pm_settings_group', 'woo_pm_disable_on_single' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_mail_subject' );
+	register_setting( 'woo_pm_settings_group', 'woo_pm_mail_content' );
 
 }
 add_action( 'admin_init', 'woo_pm_admin_settings' );
