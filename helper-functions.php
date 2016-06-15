@@ -1,13 +1,17 @@
 <?php 
 
-function woo_pm_insert_data_into_ordered_tabale( $order_id, $product_id, $product_qty ){
+/**
+ * Insert data into database table
+ * @param  int $order_id    
+ * @param  int $product_id  
+ * @param  int $product_qty 
+ */
+function woo_pm_insert_data_into_table( $order_id, $product_id, $product_qty ){
 
 	global $wpdb;
-
     $author_id = $wpdb->get_var("SELECT post_author FROM $wpdb->posts WHERE $wpdb->posts.ID = 
-    	$product_id");
-    $author_email = $wpdb->get_var("SELECT meta_value FROM $wpdb->usermeta WHERE user_id = $author_id AND meta_key = 'billing_email'");
-
+    	$order_id");
+    $author_email = $wpdb->get_var("SELECT meta_value FROM $wpdb->postmeta WHERE post_id = $order_id AND meta_key = '_billing_email'");
     $wpdb->insert( $wpdb->prefix.'wc_ordered_products', array(
 		'product_id'   => $product_id,
 		'order_id'     => $order_id,
@@ -18,7 +22,12 @@ function woo_pm_insert_data_into_ordered_tabale( $order_id, $product_id, $produc
 
 }
 
-function is_preorder_exceded( $product_id ){
+/**
+ * Check preorder limit status
+ * @param  int $product_id 
+ * @return boolean             
+ */
+function woo_pm_is_preorder_exceded( $product_id ){
 
 	$units_sold    = get_post_meta( $product_id, 'total_sales', true );
 	$preorder_unit = get_post_meta( $product->id, '_preorder_limit', true );
@@ -26,18 +35,21 @@ function is_preorder_exceded( $product_id ){
 	return $units_sold >= $preorder_unit;
 }
 
-
-function woo_pm_send_email_to_ordered_customer( $product_id, $product_name ){
+/**
+ * Send preorder limit reaching notification mail to customer
+ * @param  int $product_id   
+ * @param  string $product_name 
+ */
+function woo_pm_send_email( $product_id, $product_name ){
 
 	global $wpdb;
-
 	$table_name = $wpdb->prefix . 'wc_ordered_products';
 	$customer_emails = $wpdb->get_results("SELECT author_email FROM $table_name WHERE product_id = $product_id" );
 
 	foreach ($customer_emails as $email) {
 		$to      = $email->author_email;
-		$subject = get_option('woo_pm_mail_subject');
-		$message = get_option('woo_pm_mail_content');
+		$subject = "Product $product_name just reached to limit";
+		$message = 'Your orderd product just reached to the preorder limit, so i\'ll trigger soon';
 		wp_mail( $to, $subject, $message );
 	}
 
