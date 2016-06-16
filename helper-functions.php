@@ -49,7 +49,7 @@ function woo_pm_send_email( $product_id, $product_name ){
 	foreach ($customer_emails as $email) {
 		$to      = $email->author_email;
 		$subject = "Product $product_name just reached to limit";
-		$message = 'Your orderd product just reached to the preorder limit, so i\'ll trigger soon';
+		$message = esc_html( 'Your orderd product just reached to the preorder limit, so i\'ll trigger soon', 'text-domain' );
 		wp_mail( $to, $subject, $message );
 	}
 

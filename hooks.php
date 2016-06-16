@@ -29,7 +29,7 @@ function woo_pm_product_status_bar(){
 		$status = ( $units_sold / $preorder_limit ) * 100 ; ?>
 		<div class="woo-preorder-box">
 			<div class="preorder-status-bar" style="width:<?php echo $status; ?>%">
-				<?php echo sprintf( __( '%s of %s', 'woocommerce' ), $units_sold, $preorder_limit );  ?>
+				<?php echo sprintf( __( '%s of %s', 'text-domain' ), $units_sold, $preorder_limit );  ?>
 			</div>
 		</div>
 	<?php }
@@ -97,7 +97,7 @@ function woo_pm_add_product_fields() {
   woocommerce_wp_text_input( 
 		array( 
 			'id'          => '_preorder_limit', 
-			'label'       => __( 'Pre-order Limit', 'woocommerce' ),
+			'label'       => __( 'Pre-order Limit', 'text-domain' ),
 		)
 	);
   echo '</div>';

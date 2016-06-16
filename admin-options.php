@@ -10,19 +10,19 @@ function woo_pm_get_order_details( $product_id ){
 	$table_name  = $wpdb->prefix . 'wc_ordered_products';
 	$all_orders  = $wpdb->get_results("SELECT order_id FROM $table_name WHERE product_id = $product_id" );
 	$total_order = count( $all_orders );
-	$order_result = '<h3>Total no. of order: ' . $total_order . '</h3>';
+	$order_result = '<h3>'. esc_html__( 'Total no. of order: ', 'text-domain' ) . $total_order . '</h3>';
 	foreach ( $all_orders as $order ) {
 		$i++;
 		$order_id = $order->order_id;
 		$details  = new WC_Order($order_id);
 
-		$order_result .= '<h4>Order no. ' . $i . '<h4>';
+		$order_result .= '<h4>'. esc_html__( 'Order no. ', 'text-domain') . $i . '<h4>';
 
-		$order_result .= '<h5> Order Details </h5>';
-		$order_result .= 'Name: ' . $details->billing_first_name .' ' . $details->billing_last_name . '<br/>';
-		$order_result .= 'Email: ' . $details->billing_email . '<br/>';
+		$order_result .= '<h5>'. esc_html__( ' Order Details', 'text-domain') . '</h5>';
+		$order_result .= esc_html__( 'Name: ', 'text-domain' ) . $details->billing_first_name .' ' . $details->billing_last_name . '<br/>';
+		$order_result .= esc_html( 'Email: ', 'text-domain' ) . $details->billing_email . '<br/>';
 
-		$order_result .= 'Quantity: ';
+		$order_result .= esc_html__( 'Quantity: ', 'text-domain' );
 		$items = $details->get_items();
 		foreach ($items as $item ) {
 			$item_id = $item['product_id'];
@@ -33,30 +33,28 @@ function woo_pm_get_order_details( $product_id ){
 		$order_status = $details->post_status;
 		$status = '';
 		if ( $order_status === 'wc-pending' ) {
-			$status = 'Pending Payment';
-		} elseif ( $order_status === 'wc-pending' ) {
-			$status = '';
-		}
+			$status = esc_html__( 'Pending Payment', 'text-domain' );
+		} 
 		elseif ( $order_status === 'wc-processing' ) {
-			$status = 'Processing';
+			$status = esc_html__( 'Processing', 'text-domain' );
 		}
 		elseif ( $order_status === 'wc-on-hold' ) {
-			$status = 'On Hold';
+			$status = esc_html__( 'On Hold', 'text-domain' );
 		}
 		elseif ( $order_status === 'wc-completed' ) {
-			$status = 'Completed';
+			$status = esc_html__( 'Completed', 'text-domain' );
 		}
 		elseif ( $order_status === 'wc-cancelled' ) {
-			$status = 'Cancelled';
+			$status = esc_html__( 'Cancelled', 'text-domain' );
 		}
 		elseif ( $order_status === 'wc-refunded' ) {
-			$status = 'Refunded';
+			$status = esc_html__( 'Refunded', 'text-domain' );
 		}
 		elseif ( $order_status === 'wc-failed' ) {
-			$status = 'Failed';
+			$status = esc_html__( 'Failed', 'text-domain' );
 		}	
-		$order_result .= 'Order status: ' . $status . '<br>';
-		$order_result .= 'Order Date: ' . $details->order_date;;
+		$order_result .= esc_html__( 'Order status: ', 'text-domain' ) . $status . '<br>';
+		$order_result .= esc_html__( 'Order Date: ', 'text-domain' ) . $details->order_date;;
 		
 		$order_result .= '<hr>';
 	}
@@ -68,7 +66,7 @@ function woo_pm_get_order_details( $product_id ){
  * Dispaly preorder status
  */
 function woo_pm_preorder_admin(){ ?>
-	<h1><?php echo 'Preorder Status'; ?></h1>
+	<h1><?php echo esc_html__( 'Preorder Status', 'text-domain' ); ?></h1>
 	<?php 
 		$args = array(
 		    'post_type'      => 'product',
@@ -108,8 +106,8 @@ function woo_pm_preorder_admin(){ ?>
 				}); 
 			</script>
 		<?php 
-			$modal = '<button id="open-modal'.$post->ID.'" value="Click Here">
-					<div id="modal-content'.$post->ID.'" title="Order Details" style="display:none;">'
+			$modal = '<button id="open-modal'.$post->ID.'" value=' . esc_attr__( 'Click Here', 'text-domain' ) . '>
+					<div id="modal-content'.$post->ID.'" title=' . esc_attr__( 'Order Details', 'text-domain' ) . ' style="display:none;">'
 					. woo_pm_get_order_details( $post->ID ) .
 					'</div>';
 		    $preorder_limit = get_post_meta( $post->ID, '_preorder_limit', true ) ;
@@ -122,18 +120,18 @@ function woo_pm_preorder_admin(){ ?>
 		        <td class="column-columnname">' . get_post_meta( $post->ID, '_preorder_limit', true ) . '</td>
 		        <td class="column-columnname">' . get_post_meta( $post->ID, 'total_sales', true ) . '</td>
 		        <td class="column-columnname">' . $percentage . '% </td>
-		        <td class="column-columnname">' . $modal . 'Click Here </td>
+		        <td class="column-columnname">' . $modal . esc_html__( 'Click Here', 'text-domain' ) . '</td>
 		    </tr>';
 		} );
 
 		echo '<table class="widefat fixed" cellspacing="0">
 		        <thead>
 		            <tr>
-		                <th class="manage-column column-columnname">' . __( 'Product', 'text-domain' ) . '</th>
-		                <th class="manage-column column-columnname">' . __( 'Preorder Limit', 'text-domain' ) . '</th>
-		                <th class="manage-column column-columnname">' . __( 'Units Ordered', 'text-domain' ) . '</th>
-		                <th class="manage-column column-columnname">' . __( 'Limit Completion', 'text-domain' ) . '</th>
-		                <th class="manage-column column-columnname">' . __( 'Order Details', 'text-domain' ) . '</th>
+		                <th class="manage-column column-columnname">' . esc_html__( 'Product', 'text-domain' ) . '</th>
+		                <th class="manage-column column-columnname">' . esc_html__( 'Preorder Limit', 'text-domain' ) . '</th>
+		                <th class="manage-column column-columnname">' . esc_html__( 'Units Ordered', 'text-domain' ) . '</th>
+		                <th class="manage-column column-columnname">' . esc_html__( 'Limit Completion', 'text-domain' ) . '</th>
+		                <th class="manage-column column-columnname">' . esc_html__( 'Order Details', 'text-domain' ) . '</th>
 		            </tr>
 		        </thead>' 
 		        . $output 
@@ -154,6 +152,6 @@ add_action( 'admin_init', 'woo_pm_preorder' );
  * Dispaly plugin admin menu
  */
 function woo_pm_admin_menu() {
-	add_menu_page('Woo pre-order mailer', 'Preorder Settings', 'administrator', 'woo_pm_preorder', 'woo_pm_preorder_admin', 'dashicons-admin-generic');
+	add_menu_page( esc_html__( 'Woo pre-order mailer', 'text-domain' ) , esc_html__( 'Preorder Settings', 'text-domain' ) , 'administrator', 'woo_pm_preorder', 'woo_pm_preorder_admin', 'dashicons-admin-generic');
 }
 add_action('admin_menu', 'woo_pm_admin_menu');

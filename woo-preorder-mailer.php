@@ -15,6 +15,9 @@ define( 'PLUGIN_ROOT', dirname( dirname(__FILE__) ) . '/woo-preorder-mailer');
 // Load customized hooks
 require_once( PLUGIN_ROOT . '/hooks.php');
 
+// Plugin admin options
+require_once( PLUGIN_ROOT . '/admin-options.php');
+
 
 /**
  * Create database table after plugin activation
@@ -55,6 +58,7 @@ register_deactivation_hook( __FILE__, 'woo_pm_drop_table' );
  * Admin enqueue
  */
 function woo_pm_enqueue_admin_scripts() {
+	wp_enqueue_script (  'preorder-modal', PLUGIN_ROOT . 'assets/plugin.js', array('jquery-ui-dialog')); 
     wp_enqueue_style (  'wp-jquery-ui-dialog');
 }
 add_action( 'admin_enqueue_scripts', 'woo_pm_enqueue_admin_scripts');
